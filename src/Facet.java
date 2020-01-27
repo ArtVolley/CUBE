@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
+import java.util.Observable;
 
 public class Facet
 {
@@ -77,6 +78,7 @@ public class Facet
 
     public void draw(Graphics2D g)
     {
+
         Path2D p = new Path2D.Double();
 
         p.moveTo(vertex[0].getX(),vertex[0].getY());
@@ -95,6 +97,7 @@ public class Facet
     }
     public void drawPers(Graphics2D g, double k)
     {
+
         Path2D p = new Path2D.Double();
         Path2D p1 = new Path2D.Double();
         Path2D p2 = new Path2D.Double();

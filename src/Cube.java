@@ -1,9 +1,15 @@
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.util.Observable;
 
-public class Cube
+public class Cube extends Observable
 {
+
     private Facet[] facets;
-    double k = -500;
+    private double k = -500;
+    private boolean ort = false;
 
     public Cube()
     {
@@ -40,6 +46,8 @@ public class Cube
         {
             facets[i].rotate(ux,uy,uz);
         }
+        this.setChanged();
+        this.notifyObservers();
     }
 
     public void translate(double dx, double dy, double dz)
@@ -58,21 +66,60 @@ public class Cube
         }
     }
 
-    public void draw(Graphics2D g)
+    public void setOrt(boolean ort)
     {
-        for (int i = 0; i < 6; i++)
+        this.ort = ort;
+        this.setChanged();
+        this.notifyObservers();
+    }
+
+    public void draw(Graphics2D g, int width, int height)
+    {
+
+        if (ort == true)
         {
-            if(facets[i].normal().getZ()<=0)
+
+            //g.setColor(Color.WHITE);
+            //g.fillRect(-width/2, -height/2, width, height);
+            //g.setColor(Color.LIGHT_GRAY);
+            //g.drawLine(-width/2,0,width/2,0);
+            //g.drawLine(0,-height/2,0,height/2);
+            for (int i = 0; i < 6; i++)
             {
-                facets[i].drawPers(g, k);
+                if (facets[i].normal().getZ() <= 0)
+                {
+                    facets[i].draw(g);
+                }
+            }
+            for (int i = 0; i < 6; i++)
+            {
+                if (facets[i].normal().getZ() > 0)
+                {
+                    facets[i].draw(g);
+                }
             }
         }
-        for (int i = 0; i < 6; i++)
-        {
-            if(facets[i].normal().getZ()>0)
+        else
             {
-                facets[i].drawPers(g, k);
+                //g.setColor(Color.WHITE);
+                //g.fillRect(-width/2, -height/2, width, width);
+                //g.setColor(Color.LIGHT_GRAY);
+                //g.drawLine(-width/2,0,width/2,0);
+                //g.drawLine(0,-height/2,0,height/2);
+                for (int i = 0; i < 6; i++)
+                {
+                   if (facets[i].normal().getZ() <= 0)
+                   {
+                        facets[i].drawPers(g, k);
+                   }
+                }
+                for (int i = 0; i < 6; i++)
+                {
+                    if (facets[i].normal().getZ() > 0)
+                    {
+                        facets[i].drawPers(g, k);
+                    }
+                }
             }
-        }
     }
 }
